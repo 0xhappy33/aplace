@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.ha.aplace.data.model.DBUtitls;
-
 /**
  * Created by Ha Truong on 8/19/2017.
  */

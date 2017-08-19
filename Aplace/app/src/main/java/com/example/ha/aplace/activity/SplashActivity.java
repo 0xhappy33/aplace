@@ -1,5 +1,6 @@
-package com.example.ha.aplace;
+package com.example.ha.aplace.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +8,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import com.example.ha.aplace.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +45,8 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Hello app", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(SplashActivity.this, CategoriesActivity.class));
+                finish();
             }
         }, 3000);
     }

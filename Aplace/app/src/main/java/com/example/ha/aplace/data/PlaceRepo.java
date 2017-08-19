@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.ha.aplace.data.model.Category;
-import com.example.ha.aplace.data.model.DBUtitls;
 import com.example.ha.aplace.data.model.Place;
 
 import java.util.ArrayList;
@@ -114,7 +113,7 @@ public class PlaceRepo {
         return places;
     }
 
-    public Place getPlace(String plID) {
+    public Place getPlace(String cateID, String plID) {
         Place place = null;
 
         SQLiteDatabase database = placeSqliteHelper.getReadableDatabase();
@@ -132,8 +131,8 @@ public class PlaceRepo {
         };
 
         // condition when query database
-        String selection = DBUtitls.COLUMN_PLACE_ID + " = ?";
-        String[] selectionArgs = {plID};
+        String selection = DBUtitls.COLUMN_PLACE_ID + " = ?" +"AND" + DBUtitls.COLUMN_PLACE_CATEGORY_ID + " = ?";
+        String[] selectionArgs = {plID, cateID};
 
         // excute query to database: name of category, list columns created, selection, four things after
         Cursor cursor = database.query(DBUtitls.PLACE_TBL_NAME, columns, selection, selectionArgs, null, null, null);

@@ -1,4 +1,4 @@
-package com.example.ha.aplace.data.model;
+package com.example.ha.aplace.data;
 
 /**
  * Created by Ha Truong on 8/19/2017.
