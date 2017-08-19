@@ -22,16 +22,16 @@ public class PlaceRepo {
     private PlaceSqliteHelper placeSqliteHelper;
     private static PlaceRepo INSTANCE;
 
-    private PlaceRepo(Context context){
+    private PlaceRepo(Context context) {
         placeSqliteHelper = new PlaceSqliteHelper(context);
     }
 
-    public static PlaceRepo getInstance(Context context){
-        return (INSTANCE == null) ? new PlaceRepo(context) :  INSTANCE;
+    public static PlaceRepo getInstance(Context context) {
+        return (INSTANCE == null) ? new PlaceRepo(context) : INSTANCE;
     }
 
     // return list categories in database
-    public List<Category> getCategories(){
+    public List<Category> getCategories() {
         List<Category> categories = new ArrayList<>();
 
         // create database through sqlitehelper to read from sqlite
@@ -45,8 +45,8 @@ public class PlaceRepo {
 
         // excute query to database: name of category, list columns created, selection, four things after
         Cursor cursor = database.query(DBUtitls.CATEGORY_TBL_NAME, columns, null, null, null, null, null);
-        if (cursor != null && cursor.getCount() > 0){
-            while (cursor.moveToNext()){
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 String categoryID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_CATEGORY_ID));
                 String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_CATEGORY_NAME));
 
@@ -61,7 +61,7 @@ public class PlaceRepo {
     }
 
     // return list places in database
-    public List<Place> getPlaces(String cateID){
+    public List<Place> getPlaces(String cateID) {
         List<Place> places = new ArrayList<>();
         SQLiteDatabase database = placeSqliteHelper.getReadableDatabase();
 
@@ -82,8 +82,8 @@ public class PlaceRepo {
 
         // excute query to database: name of category, list columns created, selection, four things after
         Cursor cursor = database.query(DBUtitls.PLACE_TBL_NAME, columns, selection, selectionArgs, null, null, null);
-        if (cursor != null && cursor.getCount() > 0){
-            while (cursor.moveToNext()){
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 String placeID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_ID));
                 String categoryID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_CATEGORY_ID));
                 String placeName = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_NAME));
@@ -113,7 +113,7 @@ public class PlaceRepo {
         return places;
     }
 
-    public Place getPlace(String plID){
+    public Place getPlace(String plID) {
         Place place = null;
 
         SQLiteDatabase database = placeSqliteHelper.getReadableDatabase();
@@ -135,28 +135,27 @@ public class PlaceRepo {
 
         // excute query to database: name of category, list columns created, selection, four things after
         Cursor cursor = database.query(DBUtitls.PLACE_TBL_NAME, columns, selection, selectionArgs, null, null, null);
-        if (cursor != null && cursor.getCount() > 0){
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-                String placeID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_ID));
-                String categoryID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_CATEGORY_ID));
-                String placeName = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_NAME));
-                String placeAddress = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_ADDRESS));
-                String placeDescription = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_DESCRIPTION));
-                byte[] placeImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_IMAGE));
-                double placeLat = cursor.getDouble(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_LAT));
-                double placeLng = cursor.getDouble(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_LNG));
+            String placeID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_ID));
+            String categoryID = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_CATEGORY_ID));
+            String placeName = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_NAME));
+            String placeAddress = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_ADDRESS));
+            String placeDescription = cursor.getString(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_DESCRIPTION));
+            byte[] placeImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_IMAGE));
+            double placeLat = cursor.getDouble(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_LAT));
+            double placeLng = cursor.getDouble(cursor.getColumnIndexOrThrow(DBUtitls.COLUMN_PLACE_LNG));
 
-                place = new Place.Builder()
-                        .setPlaceID(placeID)
-                        .setCategoryID(categoryID)
-                        .setPlaceName(placeName)
-                        .setPlaceAddress(placeAddress)
-                        .setPlaceDescription(placeDescription)
-                        .setPlaceImage(placeImage)
-                        .setPlaceLat(placeLat)
-                        .setPlaceLng(placeLng)
-                        .build();
-//                places.add(place);
+            place = new Place.Builder()
+                    .setPlaceID(placeID)
+                    .setCategoryID(categoryID)
+                    .setPlaceName(placeName)
+                    .setPlaceAddress(placeAddress)
+                    .setPlaceDescription(placeDescription)
+                    .setPlaceImage(placeImage)
+                    .setPlaceLat(placeLat)
+                    .setPlaceLng(placeLng)
+                    .build();
 
         }
 
