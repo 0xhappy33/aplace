@@ -1,5 +1,6 @@
 package com.example.ha.aplace.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -130,6 +131,7 @@ public class PlaceRepo {
                 DBUtitls.COLUMN_PLACE_LNG
         };
 
+        // condition when query database
         String selection = DBUtitls.COLUMN_PLACE_ID + " = ?";
         String[] selectionArgs = {plID};
 
@@ -164,6 +166,52 @@ public class PlaceRepo {
         database.close();
 
         return place;
+    }
+
+    public void insert(Place place){
+        SQLiteDatabase database = placeSqliteHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBUtitls.COLUMN_PLACE_ID, place.getPlaceID());
+        contentValues.put(DBUtitls.COLUMN_PLACE_CATEGORY_ID, place.getCategoryID());
+        contentValues.put(DBUtitls.COLUMN_PLACE_NAME, place.getPlaceName());
+        contentValues.put(DBUtitls.COLUMN_PLACE_ADDRESS, place.getPlaceAddress());
+        contentValues.put(DBUtitls.COLUMN_PLACE_DESCRIPTION, place.getPlaceDescription());
+        contentValues.put(DBUtitls.COLUMN_PLACE_IMAGE, place.getPlaceImage());
+        contentValues.put(DBUtitls.COLUMN_PLACE_LAT, place.getPlaceLat());
+        contentValues.put(DBUtitls.COLUMN_PLACE_LNG, place.getPlaceLng());
+
+        database.insert(DBUtitls.PLACE_TBL_NAME,null, contentValues);
+        database.close();
+    }
+
+    public void update(Place place){
+        SQLiteDatabase database = placeSqliteHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBUtitls.COLUMN_PLACE_ID, place.getPlaceID());
+        contentValues.put(DBUtitls.COLUMN_PLACE_CATEGORY_ID, place.getCategoryID());
+        contentValues.put(DBUtitls.COLUMN_PLACE_NAME, place.getPlaceName());
+        contentValues.put(DBUtitls.COLUMN_PLACE_ADDRESS, place.getPlaceAddress());
+        contentValues.put(DBUtitls.COLUMN_PLACE_DESCRIPTION, place.getPlaceDescription());
+        contentValues.put(DBUtitls.COLUMN_PLACE_IMAGE, place.getPlaceImage());
+        contentValues.put(DBUtitls.COLUMN_PLACE_LAT, place.getPlaceLat());
+        contentValues.put(DBUtitls.COLUMN_PLACE_LNG, place.getPlaceLng());
+
+        String selection = DBUtitls.COLUMN_PLACE_ID + " = ?";
+        String[] selectionArgs = {place.getPlaceID()};
+
+        database.update(DBUtitls.PLACE_TBL_NAME, contentValues, selection, selectionArgs);
+        database.close();
+    }
+
+    public void delete(String plID){
+        SQLiteDatabase database = placeSqliteHelper.getWritableDatabase();
+        String selection = DBUtitls.COLUMN_PLACE_ID + " = ?";
+        String[] selectionArgs = {plID};
+
+        database.delete(DBUtitls.PLACE_TBL_NAME, selection, selectionArgs);
+        database.close();
     }
 
 }
