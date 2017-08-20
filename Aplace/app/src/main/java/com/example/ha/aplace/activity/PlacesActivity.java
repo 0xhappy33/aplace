@@ -50,24 +50,24 @@ public class PlacesActivity extends AppCompatActivity {
         categoryID = getIntent().getStringExtra(ActivityUtils.CATEGORY_KEY_PUT_EXTRA);
         placeRepo = PlaceRepo.getInstance(this);
         placesAdapter = new PlacesAdapter(this, places);
-        lvPlaces.setAdapter(placesAdapter);
         initialProgressDialog();
-        progressDialog.show();
         getPlaces();
         onPlaceClick();
     }
 
     private void getPlaces(){
+        places = placeRepo.getPlaces(categoryID);
+        //addTestData();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                places = placeRepo.getPlaces(categoryID);
-                //addTestData();
+                progressDialog.dismiss();
                 if (!places.isEmpty()){
                     txtNoData.setVisibility(View.GONE);
                 }
+                lvPlaces.setAdapter(placesAdapter);
                 placesAdapter.updateData(places);
-                progressDialog.dismiss();
+
             }
         }, 4000);
     }
@@ -77,6 +77,7 @@ public class PlacesActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage(getResources().getString(R.string.text_retrieving_data));
         progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 
     private void onPlaceClick(){
@@ -86,6 +87,7 @@ public class PlacesActivity extends AppCompatActivity {
                 Place place = places.get(position);
                 Intent detailIntent = new Intent(PlacesActivity.this, DetailActivity.class);
                 detailIntent.putExtra(ActivityUtils.PLACE_KEY_PUT_EXTRA, place.getPlaceID());
+                detailIntent.putExtra(ActivityUtils.CATEGORY_KEY_PUT_EXTRA, place.getCategoryID());
                 startActivity(detailIntent);
             }
         });
@@ -98,6 +100,20 @@ public class PlacesActivity extends AppCompatActivity {
     @OnClick(R.id.btnPlaceAct_ShowAllMap)
     public void showAllOnMap(View view){
         Toast.makeText(this, "Show all map", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(PlacesActivity.this, DetailActivity.class));
+        //startActivity(new Intent(PlacesActivity.this, DetailActivity.class));
     }
+
+//    public void addTestData(){
+//        Place place = new Place.Builder()
+//                .setPlaceID(UUID.randomUUID().toString())
+//                .setCategoryID(categoryID)
+//                .setPlaceImage(null)
+//                .setPlaceName("ABddd")
+//                .setPlaceAddress("adsads")
+//                .setPlaceDescription("asdasdsad")
+//                .setPlaceLat(0)
+//                .setPlaceLng(0)
+//                .build();
+//        places.add(place);
+//    }
 }

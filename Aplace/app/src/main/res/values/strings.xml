@@ -4,4 +4,7 @@
     <string name="text_retrieving_data">Retrieving data &#8023;</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="txt_show_all_places_on_map">Show all places on map</string>
+    <string name="text_place_name">Place name</string>
+    <string name="text_place_address">Place address</string>
+    <string name="text_place_description">Place description</string>
 </resources>
