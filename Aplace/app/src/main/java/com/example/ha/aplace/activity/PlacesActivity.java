@@ -19,6 +19,7 @@ import com.example.ha.aplace.data.model.Place;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +58,6 @@ public class PlacesActivity extends AppCompatActivity {
 
     private void getPlaces(){
         places = placeRepo.getPlaces(categoryID);
-        //addTestData();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -67,7 +67,6 @@ public class PlacesActivity extends AppCompatActivity {
                 }
                 lvPlaces.setAdapter(placesAdapter);
                 placesAdapter.updateData(places);
-
             }
         }, 4000);
     }
@@ -95,7 +94,10 @@ public class PlacesActivity extends AppCompatActivity {
 
     @OnClick(R.id.fabPlacesAct_AddNewPlace)
     public void addNewPlace(View view){
-        Toast.makeText(this, "Add new", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Add new", Toast.LENGTH_SHORT).show();
+        Intent addEditActIntent = new Intent(PlacesActivity.this, AddEditActivity.class);
+        addEditActIntent.putExtra(ActivityUtils.CATEGORY_KEY_PUT_EXTRA, categoryID);
+        startActivity(addEditActIntent);
     }
     @OnClick(R.id.btnPlaceAct_ShowAllMap)
     public void showAllOnMap(View view){
@@ -103,17 +105,17 @@ public class PlacesActivity extends AppCompatActivity {
         //startActivity(new Intent(PlacesActivity.this, DetailActivity.class));
     }
 
-//    public void addTestData(){
-//        Place place = new Place.Builder()
-//                .setPlaceID(UUID.randomUUID().toString())
-//                .setCategoryID(categoryID)
-//                .setPlaceImage(null)
-//                .setPlaceName("ABddd")
-//                .setPlaceAddress("adsads")
-//                .setPlaceDescription("asdasdsad")
-//                .setPlaceLat(0)
-//                .setPlaceLng(0)
-//                .build();
-//        places.add(place);
-//    }
+    public void addTestData(){
+        Place place = new Place.Builder()
+                .setPlaceID(UUID.randomUUID().toString())
+                .setCategoryID(categoryID)
+                .setPlaceImage(null)
+                .setPlaceName("ABddd")
+                .setPlaceAddress("adsads")
+                .setPlaceDescription("asdasdsad")
+                .setPlaceLat(0)
+                .setPlaceLng(0)
+                .build();
+        places.add(place);
+    }
 }

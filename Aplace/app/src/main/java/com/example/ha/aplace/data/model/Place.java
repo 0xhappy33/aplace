@@ -1,5 +1,7 @@
 package com.example.ha.aplace.data.model;
 
+import android.text.TextUtils;
+
 /**
  * Created by Ha Truong on 8/19/2017.
  */
@@ -110,5 +112,12 @@ public class Place {
         public Place build(){
             return new Place(this);
         }
+    }
+
+    public static boolean validateInput(String placeName, String placeAddress, String placeDescription, String categoryID){
+        return !(TextUtils.isEmpty(placeName)
+                || TextUtils.isEmpty(placeAddress)
+                || TextUtils.isEmpty(placeDescription)
+                || TextUtils.isEmpty(categoryID));
     }
 }

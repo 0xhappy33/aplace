@@ -1,16 +1,20 @@
 package com.example.ha.aplace.activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.ha.aplace.ActivityUtils;
 import com.example.ha.aplace.R;
@@ -37,6 +41,7 @@ public class DetailActivity extends AppCompatActivity {
     private String placeID;
     private String categoryID;
     private PlaceRepo placeRepo;
+    private Place place;
     private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +63,11 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setPlace(){
-        //final Place place = placeRepo.getPlace(categoryID,placeID);
-        final Place place = addTestData();
+        place = placeRepo.getPlace(categoryID,placeID);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                progressDialog.dismiss();
                 if (place.getPlaceImage() != null){
                     Bitmap placeBitMap = BitmapFactory.decodeByteArray(place.getPlaceImage(), 0 , place.getPlaceImage().length);
                     imgPlacePicture.setImageBitmap(placeBitMap);
@@ -72,7 +77,6 @@ public class DetailActivity extends AppCompatActivity {
                 edtPlaceDescription.setText(place.getPlaceDescription());
             }
         }, 4000);
-        progressDialog.dismiss();
     }
 
     private void initProgressDialog(){
@@ -85,12 +89,41 @@ public class DetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.imgDetailAct_Delete)
     public void deletePlace(View view){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(DetailActivity.this);
+        alertDialog.setTitle(getResources().getString(R.string.text_warning));
+        alertDialog.setIcon(R.drawable.ic_warning);
+        alertDialog.setMessage(getResources().getString(R.string.warning_do_you_want_to_delete)
+                + " '"
+                + place.getPlaceName()
+                + "' ? "
+        );
+
+        alertDialog.setPositiveButton(getResources().getString(R.string.text_positive),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(DetailActivity.this, "Yes", Toast.LENGTH_SHORT).show();
+                        // placeRepo.delete(placeID);
+                    }
+        });
+
+        alertDialog.setNegativeButton(getResources().getString(R.string.text_negative),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(DetailActivity.this, "No", Toast.LENGTH_SHORT).show();
+                    }
+        });
+        alertDialog.show();
 
     }
 
     @OnClick(R.id.imgDetailAct_Edit)
     public void editPlace(View view){
-
+        Intent detailIntent = new Intent(DetailActivity.this, AddEditActivity.class);
+        detailIntent.putExtra(ActivityUtils.PLACE_KEY_PUT_EXTRA, place.getPlaceID());
+        detailIntent.putExtra(ActivityUtils.CATEGORY_KEY_PUT_EXTRA, place.getCategoryID());
+        startActivity(detailIntent);
     }
 
     @OnClick(R.id.imgDetailAct_Direction)
